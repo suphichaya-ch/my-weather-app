@@ -1,4 +1,4 @@
-const apiKey = '8f14477c36dde91c82fc330309a7acf'; // ใส่ API Key ถูกต้อง
+const apiKey = '8f14477c36dde91c82fc330309a7acfe'; // ใส่ API Key ของคุณ
 
 const searchForm = document.querySelector('#search-form');
 const cityInput = document.querySelector('#city-input');
@@ -7,8 +7,11 @@ const weatherInfoContainer = document.querySelector('#weather-info-container');
 searchForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const cityName = cityInput.value.trim();
-    if (cityName) getWeather(cityName);
-    else alert('กรุณาป้อนชื่อเมือง');
+    if (cityName) {
+        getWeather(cityName);
+    } else {
+        alert('กรุณาป้อนชื่อเมือง');
+    }
 });
 
 async function getWeather(city) {
@@ -22,6 +25,7 @@ async function getWeather(city) {
         displayWeather(data);
     } catch (error) {
         weatherInfoContainer.innerHTML = `<p class="error">${error.message}</p>`;
+        console.error(error);
     }
 }
 
@@ -37,23 +41,4 @@ function displayWeather(data) {
         <p>${description}</p>
         <p>ความชื้น: ${humidity}%</p>
     `;
-
-    fetch(url)
-  .then(response => {
-    if (!response.ok) throw new Error("City not found");
-    return response.json();
-  })
-  .then(data => {
-    console.log(data); // ตรวจสอบ data ว่ามีอะไรบ้าง
-    weatherInfoContainer.innerHTML = `
-      <h2>${data.name}</h2>
-      <p>${data.weather[0].description}</p>
-      <p>Temperature: ${data.main.temp}°C</p>
-    `;
-  })
-  .catch(error => {
-    console.error("Error:", error);
-    weatherInfoContainer.innerHTML = `<p>ไม่พบข้อมูลเมือง</p>`;
-  });
-
 }
