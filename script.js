@@ -37,4 +37,23 @@ function displayWeather(data) {
         <p>${description}</p>
         <p>ความชื้น: ${humidity}%</p>
     `;
+
+    fetch(url)
+  .then(response => {
+    if (!response.ok) throw new Error("City not found");
+    return response.json();
+  })
+  .then(data => {
+    console.log(data); // ตรวจสอบ data ว่ามีอะไรบ้าง
+    weatherInfoContainer.innerHTML = `
+      <h2>${data.name}</h2>
+      <p>${data.weather[0].description}</p>
+      <p>Temperature: ${data.main.temp}°C</p>
+    `;
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    weatherInfoContainer.innerHTML = `<p>ไม่พบข้อมูลเมือง</p>`;
+  });
+
 }
